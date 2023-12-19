@@ -12,7 +12,7 @@ export class UserService {
   constructor(private prismaService: PrismaService) {}
 
   async create(createUserDto: CreateUserDto) {
-    const userWithSameUsername = this.prismaService.user.findUnique({
+    const userWithSameUsername = await this.prismaService.user.findUnique({
       where: { username: createUserDto.username },
     });
 
