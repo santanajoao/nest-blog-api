@@ -12,7 +12,7 @@ import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserEntity } from './entity/user.entity';
-import { AuthGuard } from 'src/auth/auth.guard';
+import { JwtGuard } from '../jwt/jwt.guard';
 
 @Controller('users')
 export class UserController {
@@ -24,21 +24,21 @@ export class UserController {
     return new UserEntity(createdUser);
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(JwtGuard)
   @Get(':id')
   async findOne(@Param('id') id: string) {
     const foundUser = await this.userService.findOneById(+id);
     return new UserEntity(foundUser);
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(JwtGuard)
   @Patch(':id')
   async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     const updatedUser = await this.userService.update(+id, updateUserDto);
     return new UserEntity(updatedUser);
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(JwtGuard)
   @Delete(':id')
   async remove(@Param('id') id: string) {
     const deletedUser = await this.userService.remove(+id);
