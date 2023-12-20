@@ -33,13 +33,13 @@ model Author {
 }
 
 model Follow {
-  id Int @id @default(autoincrement())
-
   user User @relation(fields: [userId], references: [id])
   userId Int
 
   author Author @relation(fields: [authorId], references: [id])
   authorId String
+
+  @@id([userId, authorId])
 }
 
 model Tag {
