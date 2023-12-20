@@ -18,7 +18,7 @@ model User {
   likes Like[]
   comments Comment[]
   author Author?
-  following Follower[]
+  following Follow[]
 }
 
 model Author {
@@ -29,10 +29,10 @@ model Author {
   userId Int @unique
 
   posts Post[]
-  followers Follower[]
+  followers Follow[]
 }
 
-model Follower {
+model Follow {
   id Int @id @default(autoincrement())
 
   user User @relation(fields: [userId], references: [id])
