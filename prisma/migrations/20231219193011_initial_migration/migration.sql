@@ -28,7 +28,7 @@ CREATE TABLE `Follower` (
 
 -- CreateTable
 CREATE TABLE `Tag` (
-    `id` INTEGER NOT NULL,
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
     `title` VARCHAR(191) NOT NULL,
 
     UNIQUE INDEX `Tag_title_key`(`title`),
