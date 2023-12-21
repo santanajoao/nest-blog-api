@@ -15,16 +15,6 @@ export class PostService {
   ) {}
 
   async create(createPostDto: CreatePostDto) {
-    const author = await this.authorService.findOneByUserId(
-      createPostDto.userId,
-    );
-
-    if (!author) {
-      throw new NotFoundException(
-        `Author with userId ${createPostDto.userId} not found`,
-      );
-    }
-
     return this.prismaService.post.create({
       data: {
         title: createPostDto.title,
@@ -35,7 +25,7 @@ export class PostService {
             create: { title },
           })),
         },
-        author: { connect: { id: author.id } },
+        author: { connect: { userId: createPostDto.userId } },
       },
     });
   }
@@ -55,8 +45,6 @@ export class PostService {
   }
 
   async search(query: string, tags: string[] = []) {
-    console.log('>>>>', tags);
-
     return this.prismaService.post.findMany({
       where: {
         OR: [
