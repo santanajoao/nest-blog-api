@@ -13,16 +13,32 @@ import { PostService } from './post.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { JwtGuard } from 'src/jwt/jwt.guard';
 import { User } from 'src/users/user.decorator';
+import { LikeService } from 'src/like/like.service';
 
 @Controller('post')
 export class PostController {
-  constructor(private readonly postService: PostService) {}
+  constructor(
+    private readonly postService: PostService,
+    private readonly likeService: LikeService,
+  ) {}
 
   @UseGuards(JwtGuard)
   @Post()
   create(@Body() createPostDto: CreatePostDto, @User('id') userId: number) {
     createPostDto.userId = userId;
     return this.postService.create(createPostDto);
+  }
+
+  @UseGuards(JwtGuard)
+  @Post(':id/likes')
+  like(@Param('id') id: string, @User('id') userId: string) {
+    return this.likeService.like(+userId, id);
+  }
+
+  @UseGuards(JwtGuard)
+  @Delete(':id/likes')
+  deslike(@Param('id') id: string, @User('id') userId: string) {
+    return this.likeService.deslike(+userId, id);
   }
 
   @Get(':id')
