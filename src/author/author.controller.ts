@@ -25,6 +25,7 @@ export class AuthorController {
     return this.authorService.findOneById(id);
   }
 
+  @UseGuards(JwtGuard)
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateAuthorDto: UpdateAuthorDto) {
     return this.authorService.update(id, updateAuthorDto);
