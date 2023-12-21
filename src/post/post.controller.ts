@@ -19,7 +19,7 @@ import { CreatePostCommentDto } from './dto/create-post-comment.dto';
 import { CommentService } from 'src/comment/comment.service';
 import { UpdatePostCommentDto } from './dto/update-post-comment.dto';
 
-@Controller('post')
+@Controller('posts')
 export class PostController {
   constructor(
     private readonly postService: PostService,
@@ -46,18 +46,21 @@ export class PostController {
     return this.likeService.deslike(+userId, id);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.postService.findOne(id);
-  }
-
   @Get('search')
   search(
     @Query('q') query: string,
-    @Query('tags', new ParseArrayPipe({ items: String, separator: ',' }))
+    @Query(
+      'tags',
+      new ParseArrayPipe({ items: String, separator: ',', optional: true }),
+    )
     tags: string[],
   ) {
     return this.postService.search(query, tags);
+  }
+
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.postService.findOne(id);
   }
 
   @Get('author/:id')

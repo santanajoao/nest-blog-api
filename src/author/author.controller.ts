@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   UseGuards,
+  Delete,
 } from '@nestjs/common';
 import { AuthorService } from './author.service';
 import { UpdateAuthorDto } from './dto/update-author.dto';
@@ -13,7 +14,7 @@ import { FollowService } from 'src/follow/follow.service';
 import { User } from 'src/users/user.decorator';
 import { JwtGuard } from 'src/jwt/jwt.guard';
 
-@Controller('author')
+@Controller('authors')
 export class AuthorController {
   constructor(
     private readonly authorService: AuthorService,
@@ -35,13 +36,13 @@ export class AuthorController {
   @Post(':id/follow')
   async follow(@Param('id') authorId: string, @User('id') userId: number) {
     await this.followService.follow(userId, authorId);
-    return 'Followed successfully';
+    return { message: 'Followed successfully' };
   }
 
   @UseGuards(JwtGuard)
-  @Post(':id/unfollow')
+  @Delete(':id/follow')
   async unfollow(@Param('id') authorId: string, @User('id') userId: number) {
     await this.followService.unfollow(userId, authorId);
-    return 'Successfully unfollowed';
+    return { message: 'Successfully unfollowed' };
   }
 }
