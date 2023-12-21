@@ -1,5 +1,5 @@
-import { UpdateCommentDto } from './update-comment.dto';
-
-export class CreateCommentDto extends UpdateCommentDto {
+export class CreateCommentDto {
   postId: string;
+  content: string;
+  userId: number;
 }

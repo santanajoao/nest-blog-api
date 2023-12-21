@@ -8,7 +8,6 @@ import {
   UseGuards,
   Query,
   ParseArrayPipe,
-  Patch,
 } from '@nestjs/common';
 import { PostService } from './post.service';
 import { CreatePostDto } from './dto/create-post.dto';
@@ -17,7 +16,6 @@ import { User } from 'src/users/user.decorator';
 import { LikeService } from 'src/like/like.service';
 import { CreatePostCommentDto } from './dto/create-post-comment.dto';
 import { CommentService } from 'src/comment/comment.service';
-import { UpdatePostCommentDto } from './dto/update-post-comment.dto';
 
 @Controller('posts')
 export class PostController {
@@ -64,7 +62,7 @@ export class PostController {
   }
 
   @Get('author/:id')
-  findAuthorPosts(@Param() authorId: string) {
+  findAuthorPosts(@Param('id') authorId: string) {
     return this.postService.findAllByAuthor(authorId);
   }
 
@@ -90,19 +88,6 @@ export class PostController {
       postId,
       userId,
       ...createPostCommentDto,
-    });
-  }
-
-  @UseGuards(JwtGuard)
-  @Patch(':id/comments/:commentId')
-  updateComment(
-    @Param('commentId') commentId: string,
-    @Body() updateCommentDto: UpdatePostCommentDto,
-    @User('id') userId: number,
-  ) {
-    return this.commentService.update(+commentId, {
-      ...updateCommentDto,
-      userId,
     });
   }
 

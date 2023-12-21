@@ -4,7 +4,6 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { CreateCommentDto } from './dto/create-comment.dto';
-import { UpdateCommentDto } from './dto/update-comment.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
@@ -23,24 +22,6 @@ export class CommentService {
 
   findByPostId(postId: string) {
     return this.prismaService.comment.findMany({ where: { postId } });
-  }
-
-  async update(id: number, { content, userId }: UpdateCommentDto) {
-    const comment = await this.findOne(id);
-    if (!comment) {
-      throw new NotFoundException(`Comment with id ${id} not found`);
-    }
-
-    if (comment.userId !== userId) {
-      throw new UnauthorizedException(
-        "You can't update a comment that isn't yours",
-      );
-    }
-
-    return this.prismaService.comment.update({
-      where: { id },
-      data: { content },
-    });
   }
 
   async remove(id: number, userId: number) {
