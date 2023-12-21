@@ -6,7 +6,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class AuthorService {
   constructor(private prismaService: PrismaService) {}
 
-  async findOne(id: string) {
+  async findOneById(id: string) {
     const author = await this.prismaService.author.findUnique({
       where: { id },
     });
@@ -18,8 +18,12 @@ export class AuthorService {
     return author;
   }
 
+  async findOneByUserId(userId: number) {
+    return this.prismaService.author.findUnique({ where: { userId } });
+  }
+
   async update(id: string, updateAuthorDto: UpdateAuthorDto) {
-    await this.findOne(id);
+    await this.findOneById(id);
 
     return this.prismaService.author.update({
       where: { id },

@@ -22,7 +22,7 @@ export class AuthorController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.authorService.findOne(id);
+    return this.authorService.findOneById(id);
   }
 
   @Patch(':id')
