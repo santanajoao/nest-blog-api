@@ -42,6 +42,6 @@ export class UserController {
   @Delete(':id')
   async remove(@Param('id') id: string) {
     const deletedUser = await this.userService.remove(+id);
-    return new UserEntity(deletedUser);
+    return { message: `User ${deletedUser.username} deleted` };
   }
 }

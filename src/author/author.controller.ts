@@ -36,13 +36,13 @@ export class AuthorController {
   @Post(':id/follow')
   async follow(@Param('id') authorId: string, @User('id') userId: number) {
     await this.followService.follow(userId, authorId);
-    return { message: 'Followed successfully' };
+    return { message: `Followed author with id ${authorId}` };
   }
 
   @UseGuards(JwtGuard)
   @Delete(':id/follow')
   async unfollow(@Param('id') authorId: string, @User('id') userId: number) {
     await this.followService.unfollow(userId, authorId);
-    return { message: 'Successfully unfollowed' };
+    return { message: `Unfollowed author with id ${authorId}` };
   }
 }

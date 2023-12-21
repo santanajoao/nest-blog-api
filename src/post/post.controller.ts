@@ -34,14 +34,16 @@ export class PostController {
 
   @UseGuards(JwtGuard)
   @Post(':id/likes')
-  like(@Param('id') id: string, @User('id') userId: string) {
-    return this.likeService.like(+userId, id);
+  async like(@Param('id') id: string, @User('id') userId: string) {
+    await this.likeService.like(+userId, id);
+    return { message: `Liked post with id ${id}` };
   }
 
   @UseGuards(JwtGuard)
   @Delete(':id/likes')
-  deslike(@Param('id') id: string, @User('id') userId: string) {
-    return this.likeService.deslike(+userId, id);
+  async deslike(@Param('id') id: string, @User('id') userId: string) {
+    await this.likeService.deslike(+userId, id);
+    return { message: `Desliked post with id ${id}` };
   }
 
   @Get('search')
@@ -68,8 +70,9 @@ export class PostController {
 
   @UseGuards(JwtGuard)
   @Delete(':id')
-  remove(@Param('id') id: string, @User('id') userId: number) {
-    return this.postService.remove(id, userId);
+  async remove(@Param('id') id: string, @User('id') userId: number) {
+    const post = await this.postService.remove(id, userId);
+    return { message: `Your post ${post.title} was successfuly deleted` };
   }
 
   @Get(':id/comments')
@@ -93,10 +96,11 @@ export class PostController {
 
   @UseGuards(JwtGuard)
   @Delete(':id/comments/:commentId')
-  deleteComment(
+  async deleteComment(
     @Param('commentId') commentId: string,
     @User('id') userId: number,
   ) {
-    return this.commentService.remove(+commentId, userId);
+    await this.commentService.remove(+commentId, userId);
+    return { message: 'Comment deleted' };
   }
 }
