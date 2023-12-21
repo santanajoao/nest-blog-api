@@ -55,6 +55,8 @@ export class PostService {
   }
 
   async search(query: string, tags: string[] = []) {
+    console.log('>>>>', tags);
+
     return this.prismaService.post.findMany({
       where: {
         OR: [
@@ -63,7 +65,7 @@ export class PostService {
           { tags: { some: { title: { contains: query } } } },
           { author: { name: { contains: query } } },
         ],
-        AND: [{ tags: { every: { AND: tags.map((title) => ({ title })) } } }],
+        AND: tags.map((title) => ({ tags: { some: { title } } })),
       },
     });
   }
